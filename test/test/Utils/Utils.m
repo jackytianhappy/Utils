@@ -9,7 +9,6 @@
 #import "Utils.h"
 
 @implementation Utils
-
 +(BOOL)stringIsNullOrSoOn:(NSString *)judgeString{
     if (![judgeString isKindOfClass:[NSString class]]) {
         return YES;
@@ -35,7 +34,6 @@
 
 
 +(NSString *)dateFromTimeStamp:(NSString *)timeStamp toDateFormatter:(NSString *)dateFormatter{
-
     NSTimeInterval time=[timeStamp doubleValue];//如果不使用本地时区,因为时差问题要加8小时 == 28800 sec
     NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
     
@@ -58,5 +56,19 @@
     return timeSp;
 }
 
++ (CGFloat)computeStrLength:(NSString *)strtemp {
+    int strlength = 0;
+    char* p = (char*)[strtemp cStringUsingEncoding:NSUnicodeStringEncoding];
+    for (int i=0 ; i<[strtemp lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+        if (*p) {
+            p++;
+            strlength++;
+        }
+        else {
+            p++;
+        }
+    }
+    return (strlength+1)/2;
+}
 
 @end
