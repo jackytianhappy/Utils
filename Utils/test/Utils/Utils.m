@@ -9,6 +9,8 @@
 #import "Utils.h"
 
 @implementation Utils
+
+#pragma mark -String Utils
 +(BOOL)stringIsNullOrSoOn:(NSString *)judgeString{
     if (![judgeString isKindOfClass:[NSString class]]) {
         return YES;
@@ -22,6 +24,7 @@
             [@"(null)" isEqualToString:judgeString] ||
             [@"" isEqualToString:judgeString] ||
             [@" " isEqualToString:judgeString] ||
+            [@"<null>" isEqualToString:judgeString]||
             judgeString.length == 0) {
             return YES;
         }
@@ -30,6 +33,51 @@
         }
     }
     return NO;
+}
+
++ (CGFloat)computeStrLength:(NSString *)strtemp {
+    int strlength = 0;
+    char* p = (char*)[strtemp cStringUsingEncoding:NSUnicodeStringEncoding];
+    for (int i=0 ; i<[strtemp lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+        if (*p) {
+            p++;
+            strlength++;
+        }
+        else {
+            p++;
+        }
+    }
+    return (strlength+1)/2;
+}
+
+#pragma mark -Time Utils
++ (NSString *)getCurrentTimeStamp{
+    //标准型
+    NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+    
+    NSTimeInterval a=[dat timeIntervalSince1970];
+    
+    NSString*timeString = [NSString stringWithFormat:@"%0.f", a];//转为字符型
+    
+    return timeString;
+}
+
++ (NSString *)changeTimeFromtTimeStampToFomatter:(NSString *)timeStamp{
+    NSDateFormatter*formatter = [[NSDateFormatter alloc]init];
+    
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    
+    [formatter setDateFormat:@"yyyMMddHHmm"];
+    
+    int timeval = [timeStamp intValue];
+    
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:timeval];
+    
+    NSString*confromTimespStr = [formatter stringFromDate:confromTimesp];
+    
+    return confromTimespStr;
 }
 
 
@@ -56,19 +104,6 @@
     return timeSp;
 }
 
-+ (CGFloat)computeStrLength:(NSString *)strtemp {
-    int strlength = 0;
-    char* p = (char*)[strtemp cStringUsingEncoding:NSUnicodeStringEncoding];
-    for (int i=0 ; i<[strtemp lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
-        if (*p) {
-            p++;
-            strlength++;
-        }
-        else {
-            p++;
-        }
-    }
-    return (strlength+1)/2;
-}
+
 
 @end
